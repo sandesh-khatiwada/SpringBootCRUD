@@ -54,4 +54,10 @@ public class DepartmentServiceImpl implements  DepartmentService{
 
     }
 
+    public Department findDepartmentByName(String departmentName){
+        return departmentRepository.findByDepartmentName(departmentName);
+    }
+
+
 }
+
