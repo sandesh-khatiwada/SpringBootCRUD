@@ -1,6 +1,7 @@
 package com.sandesh.initial.service;
 
 import com.sandesh.initial.entity.Department;
+import com.sandesh.initial.error.DepartmentAlreadyExistsException;
 import com.sandesh.initial.repository.DepartmentRepository;
 import com.sandesh.initial.error.DepartmentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,12 @@ public class DepartmentServiceImpl implements  DepartmentService{
     private DepartmentRepository departmentRepository;
 
     @Override
-    public Department saveDepartment(Department department){
+    public Department saveDepartment(Department department) throws DepartmentAlreadyExistsException {
+
+        if(departmentRepository.findByDepartmentNameIgnoreCase(department.getDepartmentName()) != null){
+            throw new DepartmentAlreadyExistsException("Department Already Exists");
+        }
+
         return departmentRepository.save(department);
     }
 
@@ -38,33 +44,45 @@ public class DepartmentServiceImpl implements  DepartmentService{
         return department.get();
     }
     @Override
-    public void deleteDepartmentById(Long departmentId){
+    public void deleteDepartmentById(Long departmentId) throws DepartmentNotFoundException {
+
+        if(!departmentRepository.existsById(departmentId)){
+            throw new DepartmentNotFoundException("Department does not exist");
+        }
+
        departmentRepository.deleteById(departmentId);
     }
 
     @Override
-    public Department updateDepartmentById(Long departmentId, Department department){
-        Department DBResult = departmentRepository.findById(departmentId).get();
+    public Department updateDepartmentById(Long departmentId, Department department) throws DepartmentNotFoundException {
+
+        Optional<Department> DBResult = departmentRepository.findById(departmentId);
+
+        if(DBResult.isEmpty()){
+            throw new DepartmentNotFoundException("Department does not exist");
+        }
+
+        Department existngDepartment = DBResult.get();
 
         if(Objects.nonNull(department.getDepartmentName()) && !"".equalsIgnoreCase(department.getDepartmentName())){
-            DBResult.setDepartmentName(department.getDepartmentName());
+            existngDepartment.setDepartmentName(department.getDepartmentName());
         }
 
         if(Objects.nonNull(department.getDepartmentCode()) && !"".equalsIgnoreCase(department.getDepartmentCode())){
-            DBResult.setDepartmentCode(department.getDepartmentCode());
+            existngDepartment.setDepartmentCode(department.getDepartmentCode());
         }
 
         if(Objects.nonNull(department.getDepartmentAddress()) && !"".equalsIgnoreCase(department.getDepartmentAddress())){
-            DBResult.setDepartmentAddress(department.getDepartmentAddress());
+            existngDepartment.setDepartmentAddress(department.getDepartmentAddress());
         }
 
-        return departmentRepository.save(DBResult);
+        return departmentRepository.save(existngDepartment);
 
 
     }
 
     public Department findDepartmentByName(String departmentName){
-        return departmentRepository.findByDepartmentName(departmentName);
+        return departmentRepository.findByDepartmentNameIgnoreCase(departmentName);
     }
 
 

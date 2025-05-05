@@ -18,7 +18,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
-
     }
+
+    @ExceptionHandler(DepartmentAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> departmentAlreadyExistsException(DepartmentAlreadyExistsException exception){
+
+        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.CONFLICT,exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
+    }
+
 
 }

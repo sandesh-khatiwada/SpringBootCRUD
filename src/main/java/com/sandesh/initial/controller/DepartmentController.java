@@ -1,6 +1,7 @@
 package com.sandesh.initial.controller;
 
 import com.sandesh.initial.entity.Department;
+import com.sandesh.initial.error.DepartmentAlreadyExistsException;
 import com.sandesh.initial.service.DepartmentService;
 import com.sandesh.initial.error.DepartmentNotFoundException;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class DepartmentController {
         private final Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
 
         @PostMapping("/department")
-        public Department saveDepartment(@Valid @RequestBody Department department){
+        public Department saveDepartment(@Valid @RequestBody Department department) throws DepartmentAlreadyExistsException {
                 LOGGER.info("Inside save department controller");
                 return departmentService.saveDepartment(department);
         }
@@ -38,7 +39,7 @@ public class DepartmentController {
         }
 
         @DeleteMapping("/department/{id}")
-        public String deleteDepartmentById(@PathVariable("id") Long departmentId){
+        public String deleteDepartmentById(@PathVariable("id") Long departmentId) throws DepartmentNotFoundException {
                 LOGGER.info("Inside delete department by id controller");
 
                 departmentService.deleteDepartmentById(departmentId);
@@ -46,7 +47,7 @@ public class DepartmentController {
         }
 
         @PutMapping("/department/{id}")
-        public Department updateDepartment(@PathVariable("id") Long departmentId,@RequestBody Department department){
+        public Department updateDepartment(@PathVariable("id") Long departmentId,@RequestBody Department department) throws DepartmentNotFoundException {
                 return departmentService.updateDepartmentById(departmentId,department);
         }
 
