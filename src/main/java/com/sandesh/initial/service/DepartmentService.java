@@ -8,16 +8,16 @@ import java.util.List;
 
 public interface DepartmentService {
 
-    public Department saveDepartment(Department department) throws DepartmentAlreadyExistsException;
+     Department saveDepartment(Department department) throws DepartmentAlreadyExistsException;
 
-    public List<Department> getDepartments();
+     List<Department> getDepartments();
 
-    public Department getDepartmentById(Long departmentId) throws DepartmentNotFoundException;
+     Department getDepartmentById(Long departmentId) throws DepartmentNotFoundException;
 
-    public void deleteDepartmentById(Long departmentId) throws DepartmentNotFoundException;
+     void deleteDepartmentById(Long departmentId) throws DepartmentNotFoundException;
 
-    public Department updateDepartmentById(Long departmentId, Department department) throws DepartmentNotFoundException;
+     Department updateDepartmentById(Long departmentId, Department department) throws DepartmentNotFoundException;
 
-    public Department findDepartmentByName(String departmentName);
+     Department findDepartmentByName(String departmentName);
 
 }

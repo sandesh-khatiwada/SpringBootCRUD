@@ -48,7 +48,7 @@ class DepartmentServiceTest {
     public void whenInvalidDepartmentName_DepartmentShouldNotReturn(){
         String departmentName="Non existent";
         Department result = departmentService.findDepartmentByName(departmentName);
-        assertEquals("","");
+        assertNull(result);
     }
 
 
